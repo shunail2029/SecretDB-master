@@ -20,7 +20,7 @@ vue/.cache
 build
 
 .pi/
-#secretdbd
-#secretdbcli
+secretdbd
+secretdbcli
 go.sum
 .vscode/
