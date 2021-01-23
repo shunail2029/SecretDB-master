@@ -100,6 +100,18 @@ go install ./cmd/secretdbd
 go install ./cmd/secretdbcli
 ```
 
+## 設定
+
+```$HOME/.secretdbd/config/app.toml```に以下を設定
+
+```bash
+validator-account = "cosmos....."
+kayring-backend = "test"
+clild-count = 1
+clild-uri = ["tcp://..."]
+child-chainid = ["test-child1"]
+```
+
 ## 起動方法
 
 ```bash
