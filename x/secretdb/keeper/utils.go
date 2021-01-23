@@ -49,12 +49,36 @@ func pathUnescape(path []string, k Keeper) ([]byte, secp256k1.PubKeySecp256k1, [
 	return msg, pubkey, sigBytes, nil
 }
 
-// TODO: add sendQueryToChild(childNum int) {}
-func sendQueryToChild(childNum int) error {
-	return nil
+func sendQueryToChild(childNum int, query string) (bson.M, error) {
+	if childNum > types.ChildCount {
+		return nil, errors.New("childNum is incorrect")
+	}
+
+	chainID := types.ChildChainIDs[childNum]
+	nodeURI := types.ChildURIs[childNum]
+
+	// prepare CLIContext
+	ctx := context.CLIContext{
+		FromAddress: types.ValidatorAccount,
+		ChainID:     chainID,
+		NodeURI:     nodeURI,
+	}
+
+	// send query to child chain
+	res, _, err := ctx.QueryWithData(query, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var out bson.M
+	err = bson.UnmarshalExtJSON(res, true, &out)
+	if err != nil {
+		return nil, err
+	}
+
+	return out, nil
 }
 
-// TODO: add sendTxToChild(childNum int) {}
 func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
 	if childNum > types.ChildCount {
 		return sdk.TxResponse{}, errors.New("childNum is incorrect")
