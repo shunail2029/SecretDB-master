@@ -1,9 +1,20 @@
 package keeper
 
 import (
+	"errors"
 	"net/url"
+	"os"
 
+	"github.com/cosmos/cosmos-sdk/client/keys"
+	"github.com/cosmos/cosmos-sdk/codec"
+	cryptokeys "github.com/cosmos/cosmos-sdk/crypto/keys"
+
+	"github.com/cosmos/cosmos-sdk/x/auth"
+	authutils "github.com/cosmos/cosmos-sdk/x/auth/client/utils"
+
+	"github.com/cosmos/cosmos-sdk/client/context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/shunail2029/SecretDB-master/x/secretdb/types"
 	"github.com/tendermint/tendermint/crypto/secp256k1"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -36,4 +47,52 @@ func pathUnescape(path []string, k Keeper) ([]byte, secp256k1.PubKeySecp256k1, [
 	sigBytes := []byte(sigStr)
 
 	return msg, pubkey, sigBytes, nil
+}
+
+// TODO: add sendQueryToChild(childNum int) {}
+func sendQueryToChild(childNum int) error {
+	return nil
+}
+
+// TODO: add sendTxToChild(childNum int) {}
+func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
+	if childNum > types.ChildCount {
+		return sdk.TxResponse{}, errors.New("childNum is incorrect")
+	}
+
+	chainID := types.ChildChainIDs[childNum]
+	nodeURI := types.ChildURIs[childNum]
+
+	// prepare CLIContext and TxBuilder
+	ctx := context.CLIContext{
+		FromAddress: types.ValidatorAccount,
+		ChainID:     chainID,
+		NodeURI:     nodeURI,
+		FromName:    "validator",
+	}
+	kb, err := cryptokeys.NewKeyring(sdk.KeyringServiceName(), types.KeyringBackend, types.CLIHome, os.Stdin)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	txBldr, err := authutils.PrepareTxBuilder(
+		auth.TxBuilder{}.WithChainID(chainID).WithKeybase(kb).WithTxEncoder(authutils.GetTxEncoder(codec.New())),
+		ctx,
+	)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	// build and sign the transaction
+	txBytes, err := txBldr.BuildAndSign(ctx.GetFromName(), keys.DefaultKeyPass, msgs)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	// broadcast tx to child chain
+	res, err := ctx.BroadcastTxSync(txBytes)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	return res, nil
 }

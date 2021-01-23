@@ -1,29 +1,54 @@
 package types
 
-import "errors"
+import (
+	"errors"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 // flags
 const (
-	FlagChildCount   = "child-count"
-	FlagChildURL     = "child-url"
-	FlagChaldChainID = "child-chainid"
+	FlagValidatorAccount = "validator-account"
+	FlagKeyringBackend   = "keyring-backend"
+	FlagCLIHome          = "cli-home" // to use keyring
+	FlagChildCount       = "child-count"
+	FlagChildURI         = "child-uri"
+	FlagChildChainID     = "child-chainid"
 )
 
 // child chain params
 var (
-	ChildCount    int
-	ChildURLs     []string
-	ChildChainIDs []string
+	ValidatorAccount sdk.AccAddress
+	KeyringBackend   string
+	CLIHome          string
+	ChildCount       int
+	ChildURIs        []string
+	ChildChainIDs    []string
 )
 
 // SetChildParams ...
-func SetChildParams(count int, urls, chainIDs []string) error {
-	if count != len(urls) {
-		return errors.New("child-count should be equal to length of child-urls")
+func SetChildParams(account, keyringBackend, cliHome string, count int, uris, chainIDs []string) error {
+	if account == "" {
+		return errors.New("validator account must be specified")
+	}
+	ValidatorAccount = sdk.AccAddress(account)
+
+	if keyringBackend == "" {
+		return errors.New("keyring backend must be specified")
+	}
+	KeyringBackend = keyringBackend
+
+	CLIHome = cliHome
+
+	if count == 0 {
+		return errors.New("child count should be more than 0")
+	}
+	if count != len(uris) || count != len(chainIDs) {
+		return errors.New("child count should be equal to length of child uris")
 	}
 
 	ChildCount = count
-	ChildURLs = urls
+	ChildURIs = uris
 	ChildChainIDs = chainIDs
 	return nil
 }

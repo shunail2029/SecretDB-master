@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -82,7 +83,15 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 	}
 
 	// set config of child chain
-	err = types.SetChildParams(viper.GetInt(types.FlagChildCount), viper.GetStringSlice(types.FlagChildURL), viper.GetStringSlice(types.FlagChaldChainID))
+	viper.SetDefault(types.FlagCLIHome, os.ExpandEnv("$HOME/.secretdbcli"))
+	err = types.SetChildParams(
+		viper.GetString(types.FlagValidatorAccount),
+		viper.GetString(types.FlagKeyringBackend),
+		viper.GetString(types.FlagCLIHome),
+		viper.GetInt(types.FlagChildCount),
+		viper.GetStringSlice(types.FlagChildURI),
+		viper.GetStringSlice(types.FlagChildChainID),
+	)
 	if err != nil {
 		panic(err)
 	}

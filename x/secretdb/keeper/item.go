@@ -8,6 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// TODO: implement xxxItem using sendTxToChild() and sendQueryToChild()
+
 // StoreItem stores a item
 func (k Keeper) StoreItem(item types.Item) {}
 
