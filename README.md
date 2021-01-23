@@ -44,10 +44,6 @@ SecretDB-master/
 │   │       └── Index.vue
 │   └── vue.config.js
 └── x
-    ├── mongodb : mongo-driverのWrapper
-    │   ├── connection.go : LocalのMongoDBとのコネクション管理
-    │   ├── query.go : MongoDBに対するクエリ関連
-    │   └── types.go : 結果格納用の構造体定義
     └── secretdb : 本体
         ├── abci.go
         ├── client
@@ -100,15 +96,6 @@ SecretDB-master/
 ```bash
 go install ./cmd/secretdbd
 go install ./cmd/secretdbcli
-```
-
-## MongoDBデータベース作成
-
-```bash
-$ mongo
-> use secretdb
-> db.createCollection('items')
-> exit
 ```
 
 ## 起動方法

@@ -14,7 +14,6 @@ import (
 	dbm "github.com/tendermint/tm-db"
 
 	"github.com/shunail2029/SecretDB-master/app"
-	"github.com/shunail2029/SecretDB-master/x/mongodb"
 	"github.com/shunail2029/SecretDB-master/x/secretdb/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -81,10 +80,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 	if err != nil {
 		panic(err)
 	}
-
-	// set config of MongoDB
-	viper.SetDefault(mongodb.FlagDBURI, "mongodb://localhost:27017")
-	mongodb.SetURI(viper.GetString(mongodb.FlagDBURI))
 
 	// set config of child chain
 	err = types.SetChildParams(viper.GetInt(types.FlagChildCount), viper.GetStringSlice(types.FlagChildURL), viper.GetStringSlice(types.FlagChaldChainID))

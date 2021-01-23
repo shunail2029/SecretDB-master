@@ -1,7 +1,6 @@
 package secretdb
 
 import (
-	"encoding/json"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -29,13 +28,14 @@ func handleMsgDeleteItem(ctx sdk.Context, k keeper.Keeper, msg types.MsgDeleteIt
 		return nil, fmt.Errorf("item not found with filter: %s", string(filter)) // XXX: better error might exist
 	}
 
-	res, err := k.DeleteItem(iFil)
-	if err != nil {
-		return nil, err
-	}
+	// res, err := k.DeleteItem(iFil)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	log, _ := json.Marshal(res)
-	return &sdk.Result{
-		Log: fmt.Sprintf("%s", string(log)),
-	}, nil
+	// log, _ := json.Marshal(res)
+	// return &sdk.Result{
+	// 	Log: fmt.Sprintf("%s", string(log)),
+	// }, nil
+	return nil, nil
 }
