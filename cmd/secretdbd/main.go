@@ -87,7 +87,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 	mongodb.SetURI(viper.GetString(mongodb.FlagDBURI))
 
 	// set config of child chain
-	err = types.SetChildParams(viper.GetInt(types.FlagChildCount), viper.GetStringSlice(types.FlagChildUrls))
+	err = types.SetChildParams(viper.GetInt(types.FlagChildCount), viper.GetStringSlice(types.FlagChildURL), viper.GetStringSlice(types.FlagChaldChainID))
 	if err != nil {
 		panic(err)
 	}

@@ -4,7 +4,7 @@ secretdbd unsafe-reset-all
 
 rm $HOME/.secretdbd/config/genesis.json
 rm $HOME/.secretdbd/config/gentx/*
-rm  $HOME/.secretdbcli/config/config.toml
+rm $HOME/.secretdbcli/config/config.toml
 
 secretdbd init mynode --chain-id test1
 
