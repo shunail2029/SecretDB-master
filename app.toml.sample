@@ -37,7 +37,7 @@ inter-block-cache = true
 
 ##### SecretDB options #####
 validator-name = "validator"
-validator-account = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
+validator-address = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
 keyring-backend = "test"
 child-count = 1
 child-uri = ["ws://192.168.0.1:26657"]
