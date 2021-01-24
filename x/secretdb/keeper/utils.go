@@ -67,7 +67,7 @@ func sendQueryToChild(childNum int, query string) ([]byte, error) {
 
 	// prepare CLIContext
 	ctx := context.CLIContext{
-		FromAddress: types.ValidatorAccount,
+		FromAddress: types.ValidatorAddress,
 		ChainID:     chainID,
 		NodeURI:     nodeURI,
 	}
@@ -91,10 +91,10 @@ func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
 
 	// prepare CLIContext and TxBuilder
 	ctx := context.CLIContext{
-		FromAddress: types.ValidatorAccount,
+		FromAddress: types.ValidatorAddress,
 		ChainID:     chainID,
 		NodeURI:     nodeURI,
-		FromName:    "validator",
+		FromName:    types.ValidatorName,
 	}
 	kb, err := cryptokeys.NewKeyring(sdk.KeyringServiceName(), types.KeyringBackend, types.CLIHome, os.Stdin)
 	if err != nil {

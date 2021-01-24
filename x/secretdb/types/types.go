@@ -8,7 +8,8 @@ import (
 
 // flags
 const (
-	FlagValidatorAccount = "validator-account"
+	FlagValidatorName    = "validator-name"
+	FlagValidatorAddress = "validator-address"
 	FlagKeyringBackend   = "keyring-backend"
 	FlagCLIHome          = "cli-home" // to use keyring
 	FlagChildCount       = "child-count"
@@ -18,7 +19,8 @@ const (
 
 // child chain params
 var (
-	ValidatorAccount sdk.AccAddress
+	ValidatorName    string
+	ValidatorAddress sdk.AccAddress
 	KeyringBackend   string
 	CLIHome          string
 	ChildCount       int
@@ -27,11 +29,16 @@ var (
 )
 
 // SetChildParams ...
-func SetChildParams(account, keyringBackend, cliHome string, count int, uris, chainIDs []string) error {
-	if account == "" {
-		return errors.New("validator account must be specified")
+func SetChildParams(name, address, keyringBackend, cliHome string, count int, uris, chainIDs []string) error {
+	if name == "" {
+		return errors.New("validator name must be specified")
 	}
-	ValidatorAccount = sdk.AccAddress(account)
+	ValidatorName = name
+
+	if address == "" {
+		return errors.New("validator address must be specified")
+	}
+	ValidatorAddress = sdk.AccAddress(address)
 
 	if keyringBackend == "" {
 		return errors.New("keyring backend must be specified")

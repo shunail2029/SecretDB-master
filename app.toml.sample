@@ -36,6 +36,7 @@ halt-time = 0
 inter-block-cache = true
 
 ##### secretdb config options #####
+validator-name = "validator"
 validator-account = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
 keyring-backend = "test"
 child-count = 1

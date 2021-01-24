@@ -105,10 +105,11 @@ go install ./cmd/secretdbcli
 ```$HOME/.secretdbd/config/app.toml```に以下を設定
 
 ```bash
-validator-account = "cosmos....."
+validator-name = "validator"
+validator-address = "cosmos..."
 kayring-backend = "test"
-clild-count = 1
-clild-uri = ["tcp://..."]
+child-count = 1
+child-uri = ["ws://..."]
 child-chainid = ["test-child1"]
 ```
 

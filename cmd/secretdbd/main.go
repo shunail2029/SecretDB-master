@@ -85,7 +85,8 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 	// set config of child chain
 	viper.SetDefault(types.FlagCLIHome, os.ExpandEnv("$HOME/.secretdbcli"))
 	err = types.SetChildParams(
-		viper.GetString(types.FlagValidatorAccount),
+		viper.GetString(types.FlagValidatorName),
+		viper.GetString(types.FlagValidatorAddress),
 		viper.GetString(types.FlagKeyringBackend),
 		viper.GetString(types.FlagCLIHome),
 		viper.GetInt(types.FlagChildCount),

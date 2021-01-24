@@ -15,7 +15,7 @@ func (k Keeper) StoreItem(item types.Item) (sdk.TxResponse, error) {
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgStoreItem(types.ValidatorAccount, string(dataBytes))
+	msg := types.NewMsgStoreItem(types.ValidatorAddress, string(dataBytes))
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -36,7 +36,7 @@ func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgUpdateItem(types.ValidatorAccount, string(filterBytes), string(updateBytes))
+	msg := types.NewMsgUpdateItem(types.ValidatorAddress, string(filterBytes), string(updateBytes))
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -57,7 +57,7 @@ func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxRespons
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgUpdateItems(types.ValidatorAccount, string(filterBytes), string(updateBytes))
+	msg := types.NewMsgUpdateItems(types.ValidatorAddress, string(filterBytes), string(updateBytes))
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -74,7 +74,7 @@ func (k Keeper) DeleteItem(iFil types.ItemFilter) (sdk.TxResponse, error) {
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgDeleteItem(types.ValidatorAccount, string(filterBytes))
+	msg := types.NewMsgDeleteItem(types.ValidatorAddress, string(filterBytes))
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -91,7 +91,7 @@ func (k Keeper) DeleteItems(iFil types.ItemFilter) (sdk.TxResponse, error) {
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgDeleteItems(types.ValidatorAccount, string(filterBytes))
+	msg := types.NewMsgDeleteItems(types.ValidatorAddress, string(filterBytes))
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
