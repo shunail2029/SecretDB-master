@@ -40,5 +40,5 @@ validator-name = "validator"
 validator-address = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
 keyring-backend = "test"
 child-count = 1
-child-uri = ["ws://192.168.0.1:26657"]
+child-uri = ["tcp://192.168.0.1:26657"]
 child-chainid = ["test-child1"]

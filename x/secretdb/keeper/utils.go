@@ -58,7 +58,7 @@ func calcRemainder(bz []byte, div int) int {
 }
 
 func sendQueryToChild(childNum int, query string) ([]byte, error) {
-	if childNum > types.ChildCount {
+	if childNum >= types.ChildCount {
 		return nil, errors.New("childNum is incorrect")
 	}
 
@@ -69,8 +69,7 @@ func sendQueryToChild(childNum int, query string) ([]byte, error) {
 	ctx := context.CLIContext{
 		FromAddress: types.ValidatorAddress,
 		ChainID:     chainID,
-		NodeURI:     nodeURI,
-	}
+	}.WithNodeURI(nodeURI)
 
 	// send query to child chain
 	res, _, err := ctx.QueryWithData(query, nil)
@@ -81,8 +80,8 @@ func sendQueryToChild(childNum int, query string) ([]byte, error) {
 	return res, nil
 }
 
-func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
-	if childNum > types.ChildCount {
+func sendTxToChild(childNum int, msgs []sdk.Msg, cdc *codec.Codec) (sdk.TxResponse, error) {
+	if childNum >= types.ChildCount {
 		return sdk.TxResponse{}, errors.New("childNum is incorrect")
 	}
 
@@ -93,15 +92,14 @@ func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
 	ctx := context.CLIContext{
 		FromAddress: types.ValidatorAddress,
 		ChainID:     chainID,
-		NodeURI:     nodeURI,
 		FromName:    types.ValidatorName,
-	}
+	}.WithNodeURI(nodeURI)
 	kb, err := cryptokeys.NewKeyring(sdk.KeyringServiceName(), types.KeyringBackend, types.CLIHome, os.Stdin)
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
 	txBldr, err := authutils.PrepareTxBuilder(
-		auth.TxBuilder{}.WithChainID(chainID).WithKeybase(kb).WithTxEncoder(authutils.GetTxEncoder(codec.New())),
+		auth.TxBuilder{}.WithTxEncoder(authutils.GetTxEncoder(cdc)).WithKeybase(kb).WithGas(types.Gas).WithChainID(chainID),
 		ctx,
 	)
 	if err != nil {

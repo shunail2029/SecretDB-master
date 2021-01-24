@@ -22,7 +22,7 @@ func (k Keeper) StoreItem(item types.Item) (sdk.TxResponse, error) {
 	}
 
 	distChild := calcRemainder(item.Owner, types.ChildCount)
-	return sendTxToChild(distChild, []sdk.Msg{msg})
+	return sendTxToChild(distChild, []sdk.Msg{msg}, k.cdc)
 }
 
 // UpdateItem sets a item
@@ -43,7 +43,7 @@ func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse
 	}
 
 	distChild := calcRemainder(iFil.Owner, types.ChildCount)
-	return sendTxToChild(distChild, []sdk.Msg{msg})
+	return sendTxToChild(distChild, []sdk.Msg{msg}, k.cdc)
 }
 
 // UpdateItems sets some items
@@ -64,7 +64,7 @@ func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxRespons
 	}
 
 	distChild := calcRemainder(iFil.Owner, types.ChildCount)
-	return sendTxToChild(distChild, []sdk.Msg{msg})
+	return sendTxToChild(distChild, []sdk.Msg{msg}, k.cdc)
 }
 
 // DeleteItem deletes a item
@@ -81,7 +81,7 @@ func (k Keeper) DeleteItem(iFil types.ItemFilter) (sdk.TxResponse, error) {
 	}
 
 	distChild := calcRemainder(iFil.Owner, types.ChildCount)
-	return sendTxToChild(distChild, []sdk.Msg{msg})
+	return sendTxToChild(distChild, []sdk.Msg{msg}, k.cdc)
 }
 
 // DeleteItems deletes some items
@@ -98,7 +98,7 @@ func (k Keeper) DeleteItems(iFil types.ItemFilter) (sdk.TxResponse, error) {
 	}
 
 	distChild := calcRemainder(iFil.Owner, types.ChildCount)
-	return sendTxToChild(distChild, []sdk.Msg{msg})
+	return sendTxToChild(distChild, []sdk.Msg{msg}, k.cdc)
 }
 
 //
