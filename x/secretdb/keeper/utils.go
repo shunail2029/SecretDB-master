@@ -2,12 +2,12 @@ package keeper
 
 import (
 	"errors"
-	"net/url"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptokeys "github.com/cosmos/cosmos-sdk/crypto/keys"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authutils "github.com/cosmos/cosmos-sdk/x/auth/client/utils"
@@ -15,8 +15,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/context"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/shunail2029/SecretDB-master/x/secretdb/types"
-	"github.com/tendermint/tendermint/crypto/secp256k1"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 // if filter has "_owner", change it to owner, else add "_owner" to filter
@@ -28,28 +26,7 @@ func insertOwner(owner sdk.AccAddress, m bson.M) bson.M {
 	return m
 }
 
-func pathUnescape(path []string, k Keeper) ([]byte, secp256k1.PubKeySecp256k1, []byte, error) {
-	msgStr, err := url.PathUnescape(path[0])
-	if err != nil {
-		return nil, secp256k1.PubKeySecp256k1{}, nil, err
-	}
-	pubkeyStr, err := url.PathUnescape(path[1])
-	if err != nil {
-		return nil, secp256k1.PubKeySecp256k1{}, nil, err
-	}
-	sigStr, err := url.PathUnescape(path[2])
-	if err != nil {
-		return nil, secp256k1.PubKeySecp256k1{}, nil, err
-	}
-	msg := []byte(msgStr)
-	var pubkey secp256k1.PubKeySecp256k1
-	k.cdc.UnmarshalBinaryBare([]byte(pubkeyStr), &pubkey) // XXX: only secp256k1 is accepted now
-	sigBytes := []byte(sigStr)
-
-	return msg, pubkey, sigBytes, nil
-}
-
-func sendQueryToChild(childNum int, query string) (bson.M, error) {
+func sendQueryToChild(childNum int, query string) ([]byte, error) {
 	if childNum > types.ChildCount {
 		return nil, errors.New("childNum is incorrect")
 	}
@@ -70,13 +47,7 @@ func sendQueryToChild(childNum int, query string) (bson.M, error) {
 		return nil, err
 	}
 
-	var out bson.M
-	err = bson.UnmarshalExtJSON(res, true, &out)
-	if err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	return res, nil
 }
 
 func sendTxToChild(childNum int, msgs []sdk.Msg) (sdk.TxResponse, error) {
