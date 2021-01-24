@@ -35,7 +35,7 @@ halt-time = 0
 # InterBlockCache enables inter-block caching.
 inter-block-cache = true
 
-##### secretdb config options #####
+##### SecretDB options #####
 validator-name = "validator"
 validator-account = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
 keyring-backend = "test"
