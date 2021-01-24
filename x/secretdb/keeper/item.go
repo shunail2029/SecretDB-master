@@ -21,7 +21,7 @@ func (k Keeper) StoreItem(item types.Item) (sdk.TxResponse, error) {
 		return sdk.TxResponse{}, err
 	}
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(item.Owner, types.ChildCount)
 	return sendTxToChild(distChild, []sdk.Msg{msg})
 }
 
@@ -42,7 +42,7 @@ func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse
 		return sdk.TxResponse{}, err
 	}
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(iFil.Owner, types.ChildCount)
 	return sendTxToChild(distChild, []sdk.Msg{msg})
 }
 
@@ -63,7 +63,7 @@ func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxRespons
 		return sdk.TxResponse{}, err
 	}
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(iFil.Owner, types.ChildCount)
 	return sendTxToChild(distChild, []sdk.Msg{msg})
 }
 
@@ -80,7 +80,7 @@ func (k Keeper) DeleteItem(iFil types.ItemFilter) (sdk.TxResponse, error) {
 		return sdk.TxResponse{}, err
 	}
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(iFil.Owner, types.ChildCount)
 	return sendTxToChild(distChild, []sdk.Msg{msg})
 }
 
@@ -97,7 +97,7 @@ func (k Keeper) DeleteItems(iFil types.ItemFilter) (sdk.TxResponse, error) {
 		return sdk.TxResponse{}, err
 	}
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(iFil.Owner, types.ChildCount)
 	return sendTxToChild(distChild, []sdk.Msg{msg})
 }
 
@@ -108,15 +108,19 @@ func (k Keeper) DeleteItems(iFil types.ItemFilter) (sdk.TxResponse, error) {
 // getItem returns the item information
 func getItem(path []string, k Keeper) ([]byte, error) {
 	query := fmt.Sprintf("custom/%s/%s/%s/%s/%s", types.StoreKey, types.QueryGetItem, path[0], path[1], path[2])
+	_, pubkey, _, _ := pathUnescape(path, k)
+	owner := pubkey.Address()
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(owner, types.ChildCount)
 	return sendQueryToChild(distChild, query)
 }
 
 // GetItems returns the item information
 func getItems(path []string, k Keeper) ([]byte, error) {
 	query := fmt.Sprintf("custom/%s/%s/%s/%s/%s", types.StoreKey, types.QueryGetItems, path[0], path[1], path[2])
+	_, pubkey, _, _ := pathUnescape(path, k)
+	owner := pubkey.Address()
 
-	distChild := 0 // TODO: change
+	distChild := calcRemainder(owner, types.ChildCount)
 	return sendQueryToChild(distChild, query)
 }

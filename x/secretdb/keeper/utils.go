@@ -2,11 +2,13 @@ package keeper
 
 import (
 	"errors"
+	"net/url"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptokeys "github.com/cosmos/cosmos-sdk/crypto/keys"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/cosmos/cosmos-sdk/x/auth"
@@ -24,6 +26,35 @@ func insertOwner(owner sdk.AccAddress, m bson.M) bson.M {
 	}
 	m["_owner"] = owner.String()
 	return m
+}
+
+func pathUnescape(path []string, k Keeper) ([]byte, secp256k1.PubKeySecp256k1, []byte, error) {
+	msgStr, err := url.PathUnescape(path[0])
+	if err != nil {
+		return nil, secp256k1.PubKeySecp256k1{}, nil, err
+	}
+	pubkeyStr, err := url.PathUnescape(path[1])
+	if err != nil {
+		return nil, secp256k1.PubKeySecp256k1{}, nil, err
+	}
+	sigStr, err := url.PathUnescape(path[2])
+	if err != nil {
+		return nil, secp256k1.PubKeySecp256k1{}, nil, err
+	}
+	msg := []byte(msgStr)
+	var pubkey secp256k1.PubKeySecp256k1
+	k.cdc.UnmarshalBinaryBare([]byte(pubkeyStr), &pubkey) // XXX: only secp256k1 is accepted now
+	sigBytes := []byte(sigStr)
+
+	return msg, pubkey, sigBytes, nil
+}
+
+func calcRemainder(bz []byte, div int) int {
+	res := 0
+	for _, b := range bz {
+		res = (256*res + int(b)) % div
+	}
+	return res
 }
 
 func sendQueryToChild(childNum int, query string) ([]byte, error) {
