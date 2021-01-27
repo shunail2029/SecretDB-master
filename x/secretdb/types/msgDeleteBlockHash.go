@@ -11,11 +11,11 @@ var _ sdk.Msg = &MsgDeleteBlockHash{}
 type MsgDeleteBlockHash struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ChainID string         `json:"chainID" yaml:"chainID"`
-	Height  int            `json:"height" yaml:"height"`
+	Height  int64          `json:"height" yaml:"height"`
 }
 
 // NewMsgDeleteBlockHash ...
-func NewMsgDeleteBlockHash(creator sdk.AccAddress, chainID string, height int) MsgDeleteBlockHash {
+func NewMsgDeleteBlockHash(creator sdk.AccAddress, chainID string, height int64) MsgDeleteBlockHash {
 	return MsgDeleteBlockHash{
 		Creator: creator,
 		ChainID: chainID,

@@ -41,7 +41,7 @@ func createBlockHashHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 		parsedChainID := req.ChainID
 
-		parsedHeight, err := strconv.Atoi(req.Height)
+		parsedHeight, err := strconv.ParseInt(req.Height, 10, 64)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -93,7 +93,7 @@ func setBlockHashHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 		parsedChainID := req.ChainID
 
-		parsedHeight, err := strconv.Atoi(req.Height)
+		parsedHeight, err := strconv.ParseInt(req.Height, 10, 64)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
@@ -144,7 +144,7 @@ func deleteBlockHashHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 		parsedChainID := req.ChainID
 
-		parsedHeight, err := strconv.Atoi(req.Height)
+		parsedHeight, err := strconv.ParseInt(req.Height, 10, 64)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return

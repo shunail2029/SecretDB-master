@@ -8,6 +8,6 @@ import (
 type BlockHash struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ChainID string         `json:"chainID" yaml:"chainID"`
-	Height  int            `json:"height" yaml:"height"`
+	Height  int64          `json:"height" yaml:"height"`
 	Hash    []byte         `json:"hash" yaml:"hash"`
 }

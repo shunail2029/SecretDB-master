@@ -11,12 +11,12 @@ var _ sdk.Msg = &MsgCreateBlockHash{}
 type MsgCreateBlockHash struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ChainID string         `json:"chainID" yaml:"chainID"`
-	Height  int            `json:"height" yaml:"height"`
+	Height  int64          `json:"height" yaml:"height"`
 	Hash    []byte         `json:"hash" yaml:"hash"`
 }
 
 // NewMsgCreateBlockHash ...
-func NewMsgCreateBlockHash(creator sdk.AccAddress, chainID string, height int, hash []byte) MsgCreateBlockHash {
+func NewMsgCreateBlockHash(creator sdk.AccAddress, chainID string, height int64, hash []byte) MsgCreateBlockHash {
 	return MsgCreateBlockHash{
 		Creator: creator,
 		ChainID: chainID,
