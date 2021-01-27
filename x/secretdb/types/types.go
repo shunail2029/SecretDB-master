@@ -8,41 +8,41 @@ import (
 
 // flags
 const (
-	FlagValidatorName    = "validator-name"
-	FlagValidatorAddress = "validator-address"
-	FlagKeyringBackend   = "keyring-backend"
-	FlagCLIHome          = "cli-home" // to use keyring
-	FlagGas              = "gas"
-	FlagChildCount       = "child-count"
-	FlagChildURI         = "child-uri"
-	FlagChildChainID     = "child-chainid"
+	FlagOperatorName    = "operator-name"
+	FlagOperatorAddress = "operator-address"
+	FlagKeyringBackend  = "keyring-backend"
+	FlagCLIHome         = "cli-home" // to use keyring
+	FlagGas             = "gas"
+	FlagChildCount      = "child-count"
+	FlagChildURI        = "child-uri"
+	FlagChildChainID    = "child-chainid"
 )
 
 // child chain params
 var (
-	ValidatorName    string
-	ValidatorAddress sdk.AccAddress
-	KeyringBackend   string
-	CLIHome          string
-	Gas              uint64
-	ChildCount       int
-	ChildURIs        []string
-	ChildChainIDs    []string
+	OperatorName    string
+	OperatorAddress sdk.AccAddress
+	KeyringBackend  string
+	CLIHome         string
+	Gas             uint64
+	ChildCount      int
+	ChildURIs       []string
+	ChildChainIDs   []string
 )
 
-// SetChildParams ...
-func SetChildParams(name, address, keyringBackend, cliHome string, gas uint64, count int, uris, chainIDs []string) error {
+// SetParams ...
+func SetParams(name, address, keyringBackend, cliHome string, gas uint64, count int, uris, chainIDs []string) error {
 	var err error
 
 	if name == "" {
-		return errors.New("validator name must be specified")
+		return errors.New("operator name must be specified")
 	}
-	ValidatorName = name
+	OperatorName = name
 
 	if address == "" {
-		return errors.New("validator address must be specified")
+		return errors.New("operator address must be specified")
 	}
-	ValidatorAddress, err = sdk.AccAddressFromBech32(address)
+	OperatorAddress, err = sdk.AccAddressFromBech32(address)
 	if err != nil {
 		return err
 	}

@@ -130,11 +130,13 @@ secretdbcli config indent true
 secretdbcli config trust-node true
 
 # 鍵の生成
+secretdbcli keys add operator
 secretdbcli keys add validator
 secretdbcli keys add user1
 secretdbcli keys add user2
 
 # genesis.jsonにアカウントを追加
+secretdbd add-genesis-account $(secretdbcli keys show operator -a) 1000token
 secretdbd add-genesis-account $(secretdbcli keys show validator -a) 1000token,100000000stake
 secretdbd add-genesis-account $(secretdbcli keys show user1 -a) 1000token
 secretdbd add-genesis-account $(secretdbcli keys show user2 -a) 1000token

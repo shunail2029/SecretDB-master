@@ -1,5 +1,7 @@
 version: 1
 accounts:
+  - name: operator
+    coins: ["1000token"]
   - name: validator
     coins: ["1000token", "100000000stake"]
   - name: user1

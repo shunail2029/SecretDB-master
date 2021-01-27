@@ -36,8 +36,8 @@ halt-time = 0
 inter-block-cache = true
 
 ##### SecretDB options #####
-validator-name = "validator"
-validator-address = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
+operator-name = "operator"
+operator-address = "cosmos17p0ewfxze7ve6dhxttv25j53lgf7a5hxtenyy6"
 keyring-backend = "test"
 child-count = 1
 child-uri = ["tcp://192.168.0.1:26657"]
