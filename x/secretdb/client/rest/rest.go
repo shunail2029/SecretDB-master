@@ -9,6 +9,11 @@ import (
 // RegisterRoutes registers secretdb-related REST handlers to a router
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	// this line is used by starport scaffolding # 1
+	r.HandleFunc("/secretdb/BlockHash", createBlockHashHandler(cliCtx)).Methods("POST")
+	r.HandleFunc("/secretdb/BlockHash/{key}", getBlockHashHandler(cliCtx, "secretdb")).Methods("GET")
+	r.HandleFunc("/secretdb/BlockHash", setBlockHashHandler(cliCtx)).Methods("PUT")
+	r.HandleFunc("/secretdb/BlockHash", deleteBlockHashHandler(cliCtx)).Methods("DELETE")
+
 	r.HandleFunc("/secretdb/item", storeItemHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/secretdb/item", getItemHandler(cliCtx, "secretdb")).Methods("GET")
 	r.HandleFunc("/secretdb/item", getItemsHandler(cliCtx, "secretdb")).Methods("GET")

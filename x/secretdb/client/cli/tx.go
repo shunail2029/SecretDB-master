@@ -23,6 +23,9 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 
 	secretdbTxCmd.AddCommand(flags.PostCommands(
 		// this line is used by starport scaffolding # 1
+		GetCmdCreateBlockHash(cdc),
+		GetCmdSetBlockHash(cdc),
+		GetCmdDeleteBlockHash(cdc),
 		GetCmdStoreItem(cdc),
 		GetCmdUpdateItem(cdc),
 		GetCmdUpdateItems(cdc),

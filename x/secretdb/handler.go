@@ -16,6 +16,12 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 		switch msg := msg.(type) {
 		// this line is used by starport scaffolding # 1
+		case types.MsgCreateBlockHash:
+			return handleMsgCreateBlockHash(ctx, k, msg)
+		case types.MsgSetBlockHash:
+			return handleMsgSetBlockHash(ctx, k, msg)
+		case types.MsgDeleteBlockHash:
+			return handleMsgDeleteBlockHash(ctx, k, msg)
 		case types.MsgStoreItem:
 			return handleMsgStoreItem(ctx, k, msg)
 		case types.MsgUpdateItem:

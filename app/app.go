@@ -189,6 +189,7 @@ func NewInitApp(
 	app.secretdbKeeper = secretdbkeeper.NewKeeper(
 		app.bankKeeper,
 		app.cdc,
+		keys[secretdbtypes.StoreKey],
 	)
 
 	// this line is used by starport scaffolding # 4

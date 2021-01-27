@@ -30,6 +30,7 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	secretdbQueryCmd.AddCommand(
 		flags.GetCommands(
 			// this line is used by starport scaffolding # 1
+			GetCmdGetBlockHash(queryRoute, cdc),
 			GetCmdGetItem(queryRoute, cdc),
 			GetCmdGetItems(queryRoute, cdc),
 		)...,

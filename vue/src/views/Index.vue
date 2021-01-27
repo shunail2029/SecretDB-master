@@ -5,6 +5,7 @@
       <sp-bank-balances />
       <sp-token-send />
       <!-- this line is used by starport scaffolding # 4 -->
+		<sp-type-form type="BlockHash" :fields="['chainId', 'height', 'hash', ]" module="secretdb" />
 		<sp-type-form type="item" :fields="[]" module="secretdb" />
     </div>
   </div>

@@ -14,13 +14,15 @@ import (
 // Keeper of the secretdb store
 type Keeper struct {
 	CoinKeeper bank.Keeper
+	storeKey   sdk.StoreKey
 	cdc        *codec.Codec
 }
 
 // NewKeeper creates a secretdb keeper
-func NewKeeper(coinKeeper bank.Keeper, cdc *codec.Codec) Keeper {
+func NewKeeper(coinKeeper bank.Keeper, cdc *codec.Codec, key sdk.StoreKey) Keeper {
 	keeper := Keeper{
 		CoinKeeper: coinKeeper,
+		storeKey:   key,
 		cdc:        cdc,
 	}
 	return keeper
