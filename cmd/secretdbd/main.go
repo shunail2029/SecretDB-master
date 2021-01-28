@@ -87,7 +87,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 	viper.SetDefault(types.FlagGas, 200000)
 	err = types.SetParams(
 		viper.GetString(types.FlagOperatorName),
-		viper.GetString(types.FlagOperatorAddress),
 		viper.GetString(types.FlagKeyringBackend),
 		viper.GetString(types.FlagCLIHome),
 		viper.GetUint64(types.FlagGas),

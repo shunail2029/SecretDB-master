@@ -106,7 +106,6 @@ go install ./cmd/secretdbcli
 
 ```bash
 validator-name = "validator"
-validator-address = "cosmos..."
 kayring-backend = "test"
 child-count = 1
 child-uri = ["ws://..."]
@@ -146,5 +145,5 @@ secretdbd gentx --name validator --keyring-backend test-master
 secretdbd collect-gentxs
 
 # 起動
-secretdbd start
+secretdbd start --rpc.laddr "tcp://0.0.0.0:26657"
 ```

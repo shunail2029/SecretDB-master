@@ -12,7 +12,7 @@ import (
 // GetCmdGetBlockHash ...
 func GetCmdGetBlockHash(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "get-BlockHash [chain-id] [height]",
+		Use:   "get-blockhash [chain-id] [height]",
 		Short: "Query a BlockHash by chain-id and heignt",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {

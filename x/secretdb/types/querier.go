@@ -8,3 +8,6 @@ const QueryGetItems = "get-items"
 
 // QueryGetBlockHash ...
 const QueryGetBlockHash = "get-BlockHash"
+
+// QueryGetOperatorPubkey ...
+const QueryGetOperatorPubkey = "get-OperatorPubkey"
