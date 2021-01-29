@@ -47,7 +47,7 @@ func createBlockHashHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		parsedHash := []byte(req.Hash)
+		parsedHash := req.Hash
 
 		msg := types.NewMsgCreateBlockHash(
 			creator,
@@ -99,7 +99,7 @@ func setBlockHashHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
-		parsedHash := []byte(req.Hash)
+		parsedHash := req.Hash
 
 		msg := types.NewMsgSetBlockHash(
 			creator,

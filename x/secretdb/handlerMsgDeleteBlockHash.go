@@ -1,6 +1,7 @@
 package secretdb
 
 import (
+	"errors"
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -12,7 +13,12 @@ import (
 
 // Handle a message to delete name
 func handleMsgDeleteBlockHash(ctx sdk.Context, k keeper.Keeper, msg types.MsgDeleteBlockHash) (*sdk.Result, error) {
-	key := msg.ChainID + fmt.Sprint(msg.Height)
+	// check sender is operator
+	if !types.OperatorAddress.Equals(msg.GetSigners()[0]) {
+		return nil, errors.New("tx from operator is acceptable")
+	}
+
+	key := msg.ChainID + "@" + fmt.Sprint(msg.Height)
 
 	if !k.BlockHashExists(ctx, key) {
 		// replace with ErrKeyNotFound for 0.39+

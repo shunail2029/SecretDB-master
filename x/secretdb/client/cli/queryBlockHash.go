@@ -17,7 +17,7 @@ func GetCmdGetBlockHash(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			key := args[0] + args[1]
+			key := args[0] + "@" + args[1]
 
 			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/%s/%s", queryRoute, types.QueryGetBlockHash, key), nil)
 			if err != nil {

@@ -13,7 +13,7 @@ import (
 // CreateBlockHash creates a BlockHash
 func (k Keeper) CreateBlockHash(ctx sdk.Context, BlockHash types.BlockHash) {
 	store := ctx.KVStore(k.storeKey)
-	key := []byte(types.BlockHashPrefix + BlockHash.ChainID + fmt.Sprint(BlockHash.Height))
+	key := []byte(types.BlockHashPrefix + BlockHash.ChainID + "@" + fmt.Sprint(BlockHash.Height))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(BlockHash)
 	store.Set(key, value)
 }
@@ -32,7 +32,7 @@ func (k Keeper) GetBlockHash(ctx sdk.Context, key string) (types.BlockHash, erro
 
 // SetBlockHash sets a BlockHash
 func (k Keeper) SetBlockHash(ctx sdk.Context, BlockHash types.BlockHash) {
-	BlockHashKey := BlockHash.ChainID + fmt.Sprint(BlockHash.Height)
+	BlockHashKey := BlockHash.ChainID + "@" + fmt.Sprint(BlockHash.Height)
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshalBinaryLengthPrefixed(BlockHash)
 	key := []byte(types.BlockHashPrefix + BlockHashKey)
