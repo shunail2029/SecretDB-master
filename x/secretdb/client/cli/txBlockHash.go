@@ -23,7 +23,7 @@ func GetCmdCreateBlockHash(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsChainID := string(args[0])
 			argsHeight, err := strconv.ParseInt(args[1], 10, 64)
-			argsHash := args[2]
+			argsHash := []byte(args[2])
 			if err != nil {
 				return err
 			}
@@ -50,7 +50,7 @@ func GetCmdSetBlockHash(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsChainID := string(args[0])
 			argsHeight, err := strconv.ParseInt(args[1], 10, 64)
-			argsHash := args[2]
+			argsHash := []byte(args[2])
 			if err != nil {
 				return err
 			}

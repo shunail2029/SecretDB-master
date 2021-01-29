@@ -12,11 +12,11 @@ type MsgSetBlockHash struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ChainID string         `json:"chainId" yaml:"chainId"`
 	Height  int64          `json:"height" yaml:"height"`
-	Hash    string         `json:"hash" yaml:"hash"`
+	Hash    []byte         `json:"hash" yaml:"hash"`
 }
 
 // NewMsgSetBlockHash ...
-func NewMsgSetBlockHash(creator sdk.AccAddress, chainID string, height int64, hash string) MsgSetBlockHash {
+func NewMsgSetBlockHash(creator sdk.AccAddress, chainID string, height int64, hash []byte) MsgSetBlockHash {
 	return MsgSetBlockHash{
 		Creator: creator,
 		ChainID: chainID,

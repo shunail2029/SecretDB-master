@@ -6,5 +6,6 @@ import (
 
 var (
 	// ErrInvalid ...
-	ErrInvalid = sdkerrors.Register(ModuleName, 1, "custom error message")
+	// code is 2 to avoid conflict with slave chain
+	ErrInvalid = sdkerrors.Register(ModuleName, 2, "custom error message")
 )

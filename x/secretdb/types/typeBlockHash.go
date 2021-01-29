@@ -9,5 +9,5 @@ type BlockHash struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ChainID string         `json:"chainID" yaml:"chainID"`
 	Height  int64          `json:"height" yaml:"height"`
-	Hash    string         `json:"hash" yaml:"hash"`
+	Hash    []byte         `json:"hash" yaml:"hash"`
 }
