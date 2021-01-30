@@ -107,6 +107,7 @@ go install ./cmd/secretdbcli
 ```bash
 validator-name = "validator"
 kayring-backend = "test"
+keyring-password = "password of your keyring"
 child-count = 1
 child-uri = ["ws://..."]
 child-chainid = ["test-child1"]

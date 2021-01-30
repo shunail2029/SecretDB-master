@@ -3,21 +3,24 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 )
 
 var _ sdk.Msg = &MsgUpdateItem{}
 
 // MsgUpdateItem is message type to set item
 type MsgUpdateItem struct {
-	Owner  sdk.AccAddress `json:"owner" yaml:"owner"`
-	Filter string         `json:"filter" yaml:"filter"`
-	Update string         `json:"update" yaml:"update"`
+	Owner  sdk.AccAddress            `json:"owner" yaml:"owner"`
+	Pubkey secp256k1.PubKeySecp256k1 `json:"pubkey" yaml:"pubkey"`
+	Filter []byte                    `json:"filter" yaml:"filter"`
+	Update []byte                    `json:"update" yaml:"update"`
 }
 
 // NewMsgUpdateItem returns new MsgUpdateItem
-func NewMsgUpdateItem(owner sdk.AccAddress, filter string, update string) MsgUpdateItem {
+func NewMsgUpdateItem(owner sdk.AccAddress, pubkey secp256k1.PubKeySecp256k1, filter []byte, update []byte) MsgUpdateItem {
 	return MsgUpdateItem{
 		Owner:  owner,
+		Pubkey: pubkey,
 		Filter: filter,
 		Update: update,
 	}

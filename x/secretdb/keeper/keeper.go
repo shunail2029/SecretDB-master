@@ -28,6 +28,11 @@ func NewKeeper(coinKeeper bank.Keeper, cdc *codec.Codec, key sdk.StoreKey) Keepe
 	return keeper
 }
 
+// Codec returns module-specific codec
+func (k Keeper) Codec() *codec.Codec {
+	return k.cdc
+}
+
 // Logger returns a module-specific logger.
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))

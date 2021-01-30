@@ -7,14 +7,25 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"go.mongodb.org/mongo-driver/bson"
 
+	"github.com/shunail2029/SecretDB-master/x/secretdb/client/cli"
 	"github.com/shunail2029/SecretDB-master/x/secretdb/keeper"
 	"github.com/shunail2029/SecretDB-master/x/secretdb/types"
 )
 
 // Handle a message to delete item
 func handleMsgDeleteItem(ctx sdk.Context, k keeper.Keeper, msg types.MsgDeleteItem) (*sdk.Result, error) {
+	// decrypt msg
+	key, err := cli.GenerateSharedKey(msg.Pubkey, nil, types.OperatorName, types.KeyringPassword, k.Codec())
+	if err != nil {
+		return nil, err
+	}
+	plainFilter, err := cli.DecryptWithKey(msg.Filter, key)
+	if err != nil {
+		return nil, err
+	}
+
 	var filter bson.M
-	err := bson.UnmarshalExtJSON([]byte(msg.Filter), true, &filter)
+	err = bson.UnmarshalExtJSON(plainFilter, true, &filter)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +34,7 @@ func handleMsgDeleteItem(ctx sdk.Context, k keeper.Keeper, msg types.MsgDeleteIt
 		Owner:  msg.Owner,
 		Filter: filter,
 	}
-	res, err := k.DeleteItem(iFil)
+	res, err := k.DeleteItem(iFil, msg.Pubkey)
 	if err != nil {
 		return nil, err
 	}

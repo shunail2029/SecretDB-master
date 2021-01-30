@@ -4,18 +4,31 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/shunail2029/SecretDB-master/x/secretdb/client/cli"
 	"github.com/shunail2029/SecretDB-master/x/secretdb/types"
+	"github.com/tendermint/tendermint/crypto/secp256k1"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 // StoreItem stores a item
-func (k Keeper) StoreItem(item types.Item) (sdk.TxResponse, error) {
+func (k Keeper) StoreItem(item types.Item, pubkey secp256k1.PubKeySecp256k1) (sdk.TxResponse, error) {
 	data := insertOwner(item.Owner, item.Data)
 	dataBytes, err := bson.MarshalExtJSON(data, true, false)
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgStoreItem(types.OperatorAddress, string(dataBytes))
+
+	// encrypt
+	key, err := cli.GenerateSharedKey(pubkey, nil, types.OperatorName, types.KeyringPassword, k.cdc)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherData, err := cli.EncryptWithKey(dataBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	msg := types.NewMsgStoreItem(types.OperatorAddress, pubkey, cipherData)
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -26,7 +39,7 @@ func (k Keeper) StoreItem(item types.Item) (sdk.TxResponse, error) {
 }
 
 // UpdateItem sets a item
-func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse, error) {
+func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M, pubkey secp256k1.PubKeySecp256k1) (sdk.TxResponse, error) {
 	filter := insertOwner(iFil.Owner, iFil.Filter)
 	filterBytes, err := bson.MarshalExtJSON(filter, true, false)
 	if err != nil {
@@ -36,7 +49,22 @@ func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgUpdateItem(types.OperatorAddress, string(filterBytes), string(updateBytes))
+
+	// encrypt
+	key, err := cli.GenerateSharedKey(pubkey, nil, types.OperatorName, types.KeyringPassword, k.cdc)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherFilter, err := cli.EncryptWithKey(filterBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherUpdate, err := cli.EncryptWithKey(updateBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	msg := types.NewMsgUpdateItem(types.OperatorAddress, pubkey, cipherFilter, cipherUpdate)
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -47,7 +75,7 @@ func (k Keeper) UpdateItem(iFil types.ItemFilter, update bson.M) (sdk.TxResponse
 }
 
 // UpdateItems sets some items
-func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxResponse, error) {
+func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M, pubkey secp256k1.PubKeySecp256k1) (sdk.TxResponse, error) {
 	filter := insertOwner(iFil.Owner, iFil.Filter)
 	filterBytes, err := bson.MarshalExtJSON(filter, true, false)
 	if err != nil {
@@ -57,7 +85,22 @@ func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxRespons
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgUpdateItems(types.OperatorAddress, string(filterBytes), string(updateBytes))
+
+	// encrypt
+	key, err := cli.GenerateSharedKey(pubkey, nil, types.OperatorName, types.KeyringPassword, k.cdc)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherFilter, err := cli.EncryptWithKey(filterBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherUpdate, err := cli.EncryptWithKey(updateBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	msg := types.NewMsgUpdateItems(types.OperatorAddress, pubkey, cipherFilter, cipherUpdate)
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -68,13 +111,24 @@ func (k Keeper) UpdateItems(iFil types.ItemFilter, update bson.M) (sdk.TxRespons
 }
 
 // DeleteItem deletes a item
-func (k Keeper) DeleteItem(iFil types.ItemFilter) (sdk.TxResponse, error) {
+func (k Keeper) DeleteItem(iFil types.ItemFilter, pubkey secp256k1.PubKeySecp256k1) (sdk.TxResponse, error) {
 	filter := insertOwner(iFil.Owner, iFil.Filter)
 	filterBytes, err := bson.MarshalExtJSON(filter, true, false)
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgDeleteItem(types.OperatorAddress, string(filterBytes))
+
+	// encrypt
+	key, err := cli.GenerateSharedKey(pubkey, nil, types.OperatorName, types.KeyringPassword, k.cdc)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherFilter, err := cli.EncryptWithKey(filterBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	msg := types.NewMsgDeleteItem(types.OperatorAddress, pubkey, cipherFilter)
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err
@@ -85,13 +139,24 @@ func (k Keeper) DeleteItem(iFil types.ItemFilter) (sdk.TxResponse, error) {
 }
 
 // DeleteItems deletes some items
-func (k Keeper) DeleteItems(iFil types.ItemFilter) (sdk.TxResponse, error) {
+func (k Keeper) DeleteItems(iFil types.ItemFilter, pubkey secp256k1.PubKeySecp256k1) (sdk.TxResponse, error) {
 	filter := insertOwner(iFil.Owner, iFil.Filter)
 	filterBytes, err := bson.MarshalExtJSON(filter, true, false)
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
-	msg := types.NewMsgDeleteItems(types.OperatorAddress, string(filterBytes))
+
+	// encrypt
+	key, err := cli.GenerateSharedKey(pubkey, nil, types.OperatorName, types.KeyringPassword, k.cdc)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+	cipherFilter, err := cli.EncryptWithKey(filterBytes, key)
+	if err != nil {
+		return sdk.TxResponse{}, err
+	}
+
+	msg := types.NewMsgDeleteItems(types.OperatorAddress, pubkey, cipherFilter)
 	err = msg.ValidateBasic()
 	if err != nil {
 		return sdk.TxResponse{}, err

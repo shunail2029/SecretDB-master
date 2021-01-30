@@ -9,15 +9,19 @@ import (
 	"github.com/tendermint/tendermint/crypto"
 )
 
+// SharedKey is used to encrypt/decrypt msg
+type SharedKey [32]byte
+
 // flags
 const (
-	FlagOperatorName   = "operator-name"
-	FlagKeyringBackend = "keyring-backend"
-	FlagCLIHome        = "cli-home" // to use keyring
-	FlagGas            = "gas"
-	FlagChildCount     = "child-count"
-	FlagChildURI       = "child-uri"
-	FlagChildChainID   = "child-chainid"
+	FlagOperatorName    = "operator-name"
+	FlagKeyringBackend  = "keyring-backend"
+	FlagKeyringPassword = "keyring-password"
+	FlagCLIHome         = "cli-home" // to use keyring
+	FlagGas             = "gas"
+	FlagChildCount      = "child-count"
+	FlagChildURI        = "child-uri"
+	FlagChildChainID    = "child-chainid"
 )
 
 // child chain params
@@ -26,6 +30,7 @@ var (
 	OperatorAddress sdk.AccAddress
 	OperatorPubkey  crypto.PubKey
 	KeyringBackend  string
+	KeyringPassword string
 	CLIHome         string
 	Gas             uint64
 	ChildCount      int
@@ -34,7 +39,7 @@ var (
 )
 
 // SetParams ...
-func SetParams(name, keyringBackend, cliHome string, gas uint64, count int, uris, chainIDs []string) error {
+func SetParams(name, keyringBackend, keyringPassword, cliHome string, gas uint64, count int, uris, chainIDs []string) error {
 	var err error
 
 	if name == "" {
