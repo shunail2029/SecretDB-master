@@ -26,71 +26,70 @@ SecretDB-master/
 │       └── main.go
 ├── config.yml
 ├── go.mod
-├── startup.sh : 初期化用スクリプト
-├── vue : フロントエンド（未実装）
-│   ├── README.md
-│   ├── babel.config.js
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── public
-│   │   ├── favicon.ico
-│   │   └── index.html
-│   ├── src
-│   │   ├── App.vue
-│   │   ├── main.js
-│   │   ├── router
-│   │   │   └── index.js
-│   │   ├── store
-│   │   │   └── index.js
-│   │   └── views
-│   │       └── Index.vue
-│   └── vue.config.js
+├── init.sh : 初期化用スクリプト
 └── x
-    └── secretdb : 本体
-        ├── abci.go
-        ├── client
-        │   ├── cli : secretcbcli
-        │   │   ├── query.go
-        │   │   ├── queryItem.go
-        │   │   ├── tx.go
-        │   │   ├── txItem.go
-        │   │   └── utils.go
-        │   └── rest : REST
-        │       ├── queryItem.go
-        │       ├── rest.go
-        │       └── txItem.go
+ └── secretdb : 本体
+    ├── abci.go
+    ├── client
+    │   ├── cli : secretcbcli
+    │   │   ├── query.go
+    │   │   ├── queryBlockHash.go
+    │   │   ├── queryItem.go
+    │   │   ├── queryOperatorPubkey.go
+    │   │   ├── tx.go
+    │   │   ├── txBlockHash.go
+    │   │   ├── txItem.go
+    │   │   └── utils.go
+    │   └── rest : REST
+    │       ├── queryBlockHash.go
+    │       ├── queryItem.go
+    │       ├── queryOperatorPubkey.go
+    │       ├── rest.go
+    │       ├── txBlockHash.go
+    │       └── txItem.go
+    ├── genesis.go
+    ├── handler.go : メッセージハンドラ
+    ├── handlerMsgCreateBlockHash.go
+    ├── handlerMsgDeleteBlockHash.go
+    ├── handlerMsgDeleteItem.go
+    ├── handlerMsgDeleteItems.go
+    ├── handlerMsgSetBlockHash.go
+    ├── handlerMsgStoreItem.go
+    ├── handlerMsgUpdateItem.go
+    ├── handlerMsgUpdateItems.go
+    ├── keeper : データベースとのやり取りを管理
+    │   ├── blockHash.go
+    │   ├── item.go
+    │   ├── keeper.go
+    │   ├── operatorPubkey.go
+    │   ├── params.go
+    │   ├── querier.go
+    │   └── utils.go
+    ├── module.go
+    ├── spec
+    │   └── README.md
+    └── types : 構造体等の定義
+        ├── codec.go
+        ├── errors.go
+        ├── events.go
+        ├── expected_keepers.go
         ├── genesis.go
-        ├── handler.go : メッセージハンドラ
-        ├── handlerMsgDeleteItem.go
-        ├── handlerMsgDeleteItems.go
-        ├── handlerMsgStoreItem.go
-        ├── handlerMsgUpdateItem.go
-        ├── handlerMsgUpdateItems.go
-        ├── keeper : データベースとのやり取りを管理
-        │   ├── item.go
-        │   ├── keeper.go
-        │   ├── params.go
-        │   └── querier.go
-        ├── module.go
-        ├── spec
-        │   └── README.md
-        └── types : 構造体等の定義
-            ├── MsgDeleteItem.go
-            ├── MsgDeleteItems.go
-            ├── MsgStoreItem.go
-            ├── MsgUpdateItem.go
-            ├── MsgUpdateItems.go
-            ├── TypeItem.go
-            ├── codec.go
-            ├── errors.go
-            ├── events.go
-            ├── expected_keepers.go
-            ├── genesis.go
-            ├── key.go
-            ├── msg.go
-            ├── params.go
-            ├── querier.go
-            └── types.go
+        ├── key.go
+        ├── msg.go
+        ├── msgCreateBlockHash.go
+        ├── msgDeleteBlockHash.go
+        ├── msgDeleteItem.go
+        ├── msgDeleteItems.go
+        ├── msgSetBlockHash.go
+        ├── msgStoreItem.go
+        ├── msgUpdateItem.go
+        ├── msgUpdateItems.go
+        ├── params.go
+        ├── querier.go
+        ├── typeBlockHash.go
+        ├── typeItem.go
+        └── types.go
+
 ```
 
 ## インストール
@@ -109,7 +108,7 @@ validator-name = "validator"
 kayring-backend = "test"
 keyring-password = "password of your keyring"
 child-count = 1
-child-uri = ["ws://..."]
+child-uri = ["tcp://..."]
 child-chainid = ["test-child1"]
 ```
 
