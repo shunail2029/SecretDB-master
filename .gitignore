@@ -19,6 +19,7 @@ vue/dist
 vue/.cache
 build
 
+vue/
 .pi/
 secretdbd
 secretdbcli
