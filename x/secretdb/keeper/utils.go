@@ -87,6 +87,8 @@ func sendTxToChild(childNum int, msgs []sdk.Msg, cdc *codec.Codec) (sdk.TxRespon
 
 	chainID := types.ChildChainIDs[childNum]
 	nodeURI := types.ChildURIs[childNum]
+	accNum := types.AccNum[childNum]
+	accSeq := types.AccSeq[childNum]
 
 	// prepare CLIContext and TxBuilder
 	ctx := context.CLIContext{
@@ -99,7 +101,7 @@ func sendTxToChild(childNum int, msgs []sdk.Msg, cdc *codec.Codec) (sdk.TxRespon
 		return sdk.TxResponse{}, err
 	}
 	txBldr, err := authutils.PrepareTxBuilder(
-		auth.TxBuilder{}.WithTxEncoder(authutils.GetTxEncoder(cdc)).WithKeybase(kb).WithGas(types.Gas).WithChainID(chainID),
+		auth.TxBuilder{}.WithTxEncoder(authutils.GetTxEncoder(cdc)).WithKeybase(kb).WithAccountNumber(accNum).WithSequence(accSeq).WithGas(types.Gas).WithChainID(chainID),
 		ctx,
 	)
 	if err != nil {
@@ -117,6 +119,9 @@ func sendTxToChild(childNum int, msgs []sdk.Msg, cdc *codec.Codec) (sdk.TxRespon
 	if err != nil {
 		return sdk.TxResponse{}, err
 	}
+
+	types.AccNum[childNum]++
+	types.AccSeq[childNum]++
 
 	return res, nil
 }

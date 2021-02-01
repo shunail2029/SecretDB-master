@@ -36,6 +36,8 @@ var (
 	ChildCount      int
 	ChildURIs       []string
 	ChildChainIDs   []string
+	AccNum          [16]uint64
+	AccSeq          [16]uint64
 )
 
 // SetParams ...
@@ -68,6 +70,8 @@ func SetParams(name, keyringBackend, keyringPassword, cliHome string, gas uint64
 
 	if count == 0 {
 		return errors.New("child count should be more than 0")
+	} else if count > 16 {
+		return errors.New("child count must be less than 17")
 	}
 	if count != len(uris) || count != len(chainIDs) {
 		return errors.New("child count should be equal to length of child uris")
