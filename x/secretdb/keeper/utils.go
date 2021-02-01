@@ -120,7 +120,6 @@ func sendTxToChild(childNum int, msgs []sdk.Msg, cdc *codec.Codec) (sdk.TxRespon
 		return sdk.TxResponse{}, err
 	}
 
-	types.AccNum[childNum]++
 	types.AccSeq[childNum]++
 
 	return res, nil

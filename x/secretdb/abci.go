@@ -15,6 +15,10 @@ import (
 // on every begin block
 func BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock, k keeper.Keeper) {
 	for i := 0; i < types.ChildCount; i++ {
+		if types.AccNum[i] != 0 {
+			continue
+		}
+
 		chainID := types.ChildChainIDs[i]
 		nodeURI := types.ChildURIs[i]
 
